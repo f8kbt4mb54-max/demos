@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Sushi Zun · Ospital Monacale (Molinella) — Demo sito</title>
+<meta name="description" content="Demo del sito per Ristorante Sushi Zun: menù interattivo, ordini online da asporto e consegna, prenotazione tavolo.">
+<meta property="og:title" content="Sushi Zun — demo del vostro nuovo sito">
+<meta property="og:description" content="Menù interattivo, ordini online e prenotazioni. Demo gratuita realizzata da Vlad.">
+<meta property="og:image" content="https://f8kbt4mb54-max.github.io/demos/sushi-zun-molinella/img/og.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0b0a09">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%23c0392b%22/%3E%3Ctext x=%2250%22 y=%2272%22 font-size=%2264%22 text-anchor=%22middle%22 fill=%22white%22%3E%E5%B0%8A%3C/text%3E%3C/svg%3E">
+<link rel="preload" as="image" href="img/hero.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Serif+JP:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0a09;--bg2:#141210;--card:#1a1714;--line:#2c2620;--gold:#d4af6a;--gold2:#f1d9a4;--red:#c0392b;--red2:#e0533f;--txt:#efe8dc;--mut:#a59b8c;--r:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{-webkit-tap-highlight-color:transparent;background:var(--bg);color:var(--txt);font:15px/1.55 Inter,system-ui,sans-serif;overflow-x:hidden}
+body.lock{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+img{display:block;max-width:100%}
+.serif{font-family:"Cormorant Garamond",serif}
+.jp{font-family:"Noto Serif JP",serif}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+/* loader */
+#loader{position:fixed;inset:0;z-index:999;background:var(--bg);display:grid;place-items:center;transition:opacity .8s,visibility .8s}
+#loader.done{opacity:0;visibility:hidden}
+#loader .k{font:700 72px "Noto Serif JP",serif;color:var(--red);opacity:0;animation:ink 1.1s .1s forwards}
+#loader .l{height:1px;background:var(--gold);width:0;margin:18px auto 0;animation:line 1s .4s forwards}
+@keyframes ink{from{opacity:0;transform:scale(1.3);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes line{to{width:140px}}
+/* demo bar */
+.demobar{position:relative;z-index:60;background:linear-gradient(90deg,#6d1a12,#a32b1d,#6d1a12);color:#fff;font-size:12.5px;text-align:center;padding:7px 12px;letter-spacing:.02em}
+/* nav */
+nav{position:sticky;top:0;z-index:50;transition:background .4s,backdrop-filter .4s,border-color .4s;border-bottom:1px solid transparent}
+nav.solid{background:rgba(11,10,9,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo .seal{width:38px;height:38px;border-radius:9px;background:var(--red);display:grid;place-items:center;font:700 20px "Noto Serif JP";color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.08) inset}
+.logo b{font:600 24px "Cormorant Garamond";letter-spacing:.06em}
+.logo small{display:block;font-size:10px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-top:-4px}
+.links{display:flex;gap:26px;font-size:14px;color:var(--mut)}
+.links a:hover{color:var(--gold2)}
+.cartbtn{position:relative;display:flex;align-items:center;gap:8px;background:var(--gold);color:#1a1207;border:0;border-radius:99px;padding:9px 16px;font-weight:600;cursor:pointer}
+.cartbtn .n{min-width:20px;height:20px;border-radius:99px;background:#1a1207;color:var(--gold2);font-size:12px;display:grid;place-items:center;padding:0 5px}
+.cartbtn.bump{animation:bump .45s}
+@keyframes bump{40%{transform:scale(1.15)}}
+@media(max-width:860px){.links{display:none}}
+/* hero */
+.hero{position:relative;min-height:calc(100svh - 96px);display:flex;align-items:flex-end;overflow:hidden;margin-top:-64px;padding-top:64px}
+.hero .bg{position:absolute;inset:-8% 0;background:url(img/hero.webp) 68% center/cover;will-change:transform;transform:scale(1.08)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,10,9,.94) 0%,rgba(11,10,9,.55) 45%,rgba(11,10,9,.15) 100%),linear-gradient(0deg,var(--bg) 0%,transparent 35%)}
+@media(max-width:700px){.hero .bg{background-position:72% center}.hero::after{background:linear-gradient(0deg,var(--bg) 8%,rgba(11,10,9,.6) 55%,rgba(11,10,9,.15))}}
+#petals{position:absolute;inset:0;z-index:1;pointer-events:none}
+.hero .in{position:relative;z-index:2;padding:0 20px 9vh;max-width:1180px;margin:0 auto;width:100%}
+.kanji-v{position:absolute;right:4vw;top:16vh;z-index:2;writing-mode:vertical-rl;font:700 clamp(40px,7vw,96px) "Noto Serif JP";color:transparent;-webkit-text-stroke:1px rgba(212,175,106,.35);letter-spacing:.2em}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--gold)}
+.hero h1{font:500 clamp(54px,11vw,132px)/.92 "Cormorant Garamond";margin:16px 0 14px;letter-spacing:-.01em}
+.hero h1 em{font-style:italic;color:var(--gold2)}
+.hero h1 .w{display:inline-block;overflow:hidden;vertical-align:bottom}
+.hero h1 .w span{display:inline-block;transform:translateY(110%);transition:transform 1.1s cubic-bezier(.2,.8,.2,1)}
+.ready .hero h1 .w span{transform:none}
+.hero p.sub{max-width:520px;color:#d6cdbf;font-size:clamp(15px,2vw,18px)}
+.fade{opacity:0;transform:translateY(18px);transition:opacity 1s,transform 1s}
+.ready .fade{opacity:1;transform:none}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 24px;border-radius:99px;font-weight:600;border:1px solid transparent;cursor:pointer;transition:transform .2s,background .3s,box-shadow .3s}
+.btn:active{transform:scale(.97)}
+.btn.red{background:var(--red);color:#fff;box-shadow:0 10px 30px -10px rgba(192,57,43,.8)}
+.btn.red:hover{background:var(--red2)}
+.btn.ghost{border-color:rgba(241,217,164,.45);color:var(--gold2);background:rgba(11,10,9,.3);backdrop-filter:blur(6px)}
+.btn.gold{background:var(--gold);color:#1a1207}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.chip{font-size:12.5px;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:rgba(20,18,16,.6);color:#d9cfbf;backdrop-filter:blur(6px)}
+.chip b{color:var(--gold2)}
+.scrollhint{position:absolute;left:50%;bottom:18px;z-index:2;width:22px;height:36px;border:1px solid rgba(241,217,164,.5);border-radius:12px;transform:translateX(-50%)}
+.scrollhint::after{content:"";position:absolute;left:50%;top:7px;width:2px;height:7px;background:var(--gold);transform:translateX(-50%);animation:sh 1.8s infinite}
+@keyframes sh{to{transform:translate(-50%,12px);opacity:0}}
+/* marquee */
+.marq{border-block:1px solid var(--line);overflow:hidden;white-space:nowrap;padding:14px 0;background:var(--bg2)}
+.marq div{display:inline-block;animation:mq 38s linear infinite;font:500 22px "Cormorant Garamond";color:var(--mut)}
+.marq span{margin:0 22px}.marq i{color:var(--red);font-style:normal}
+@keyframes mq{to{transform:translateX(-50%)}}
+/* sections */
+section{padding:90px 0}
+.h2{font:500 clamp(38px,6vw,64px)/1 "Cormorant Garamond";margin:12px 0 14px}
+.h2 em{color:var(--gold2)}
+.lead{color:var(--mut);max-width:620px}
+.rv{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.rv.on{opacity:1;transform:none}
+.note{font-size:12px;color:#8d8374;border-left:2px solid var(--red);padding-left:10px;margin-top:14px}
+/* story */
+.story{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
+.story .pics{position:relative;height:520px}
+.story .pics img{position:absolute;border-radius:var(--r);object-fit:cover;box-shadow:0 30px 60px -20px #000}
+.story .p1{width:68%;height:78%;left:0;top:0}
+.story .p2{width:52%;height:52%;right:0;bottom:0;border:6px solid var(--bg)}
+.story .badge{position:absolute;left:52%;top:46%;z-index:2;width:118px;height:118px;border-radius:50%;background:var(--red);display:grid;place-items:center;text-align:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;animation:spin 18s linear infinite}
+.story .badge b{display:block;font:700 30px "Noto Serif JP";letter-spacing:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.fact b{display:block;font:600 30px "Cormorant Garamond";color:var(--gold2)}
+.fact span{font-size:12.5px;color:var(--mut)}
+@media(max-width:860px){.story{grid-template-columns:1fr}.story .pics{height:380px}.facts{grid-template-columns:1fr 1fr 1fr}}
+/* ayce */
+.ayce{position:relative;background:radial-gradient(1200px 400px at 80% 0,rgba(192,57,43,.25),transparent),var(--bg2);border-block:1px solid var(--line)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;position:relative;overflow:hidden}
+.step .num{font:700 54px "Noto Serif JP";color:rgba(212,175,106,.13);position:absolute;right:12px;top:0}
+.step h4{font:600 22px "Cormorant Garamond";color:var(--gold2);margin-bottom:6px}
+.step p{font-size:13.5px;color:var(--mut)}
+.price-tbc{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
+.price-tbc div{border:1px dashed rgba(212,175,106,.5);border-radius:12px;padding:12px 18px}
+.price-tbc b{font:600 26px "Cormorant Garamond";color:var(--gold2)}
+@media(max-width:860px){.steps{grid-template-columns:1fr 1fr}}
+/* menu */
+.menu-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.tools{position:sticky;top:64px;z-index:30;background:rgba(11,10,9,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:14px 0 10px;margin-top:26px;border-bottom:1px solid var(--line)}
+.search{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:10px 16px}
+.search input{flex:1;background:none;border:0;outline:0;min-width:0}
+.tabs,.filters{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-top:10px;padding-bottom:2px}
+.tabs::-webkit-scrollbar,.filters::-webkit-scrollbar{display:none}
+.tab{flex:none;padding:8px 15px;border-radius:99px;border:1px solid var(--line);background:none;cursor:pointer;color:var(--mut);font-size:13.5px;white-space:nowrap}
+.tab.on{background:var(--txt);color:var(--bg);border-color:var(--txt)}
+.flt{flex:none;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:none;cursor:pointer;font-size:12.5px;color:var(--mut);white-space:nowrap}
+.flt.on{border-color:var(--gold);color:var(--gold2);background:rgba(212,175,106,.1)}
+.cat{margin-top:44px;scroll-margin-top:190px}
+.cat h3{display:flex;align-items:baseline;gap:14px;font:500 34px "Cormorant Garamond"}
+.cat h3 .jp{font-size:18px;color:var(--red)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:18px}
+.dish{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:transform .35s,border-color .35s,box-shadow .35s;cursor:pointer}
+.dish:hover{transform:translateY(-4px);border-color:rgba(212,175,106,.45);box-shadow:0 20px 40px -20px #000}
+.dish .ph{aspect-ratio:4/3;overflow:hidden;position:relative;background:linear-gradient(135deg,#221d18,#120f0d)}
+.dish .ph img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.dish:hover .ph img{transform:scale(1.07)}
+.dish .ph .ph-k{position:absolute;inset:0;display:grid;place-items:center;font:700 64px "Noto Serif JP";color:rgba(212,175,106,.18)}
+.dish .tags{position:absolute;left:10px;top:10px;display:flex;gap:6px}
+.tg{font-size:11px;padding:3px 8px;border-radius:99px;background:rgba(11,10,9,.75);backdrop-filter:blur(4px)}
+.tg.veg{color:#9fd88f}.tg.hot{color:#ff8a70}.tg.top{color:var(--gold2)}.tg.ayce{color:#9cc6ff}
+.dish .bd{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.dish h4{font:600 21px/1.15 "Cormorant Garamond"}
+.dish p{font-size:13px;color:var(--mut);flex:1}
+.dish .row{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.price{font-weight:600;color:var(--gold2)}
+.price small{font-weight:400;color:#7d7466;font-size:11px;margin-left:4px}
+.add{width:38px;height:38px;border-radius:50%;border:0;background:var(--red);color:#fff;font-size:22px;line-height:1;cursor:pointer;display:grid;place-items:center;transition:transform .2s}
+.add:active{transform:scale(.88)}
+.qtyc{display:flex;align-items:center;gap:8px;background:#0f0d0b;border:1px solid var(--line);border-radius:99px;padding:3px}
+.qtyc button{width:30px;height:30px;border-radius:50%;border:0;background:#26211c;cursor:pointer;font-size:17px}
+.qtyc span{min-width:16px;text-align:center;font-weight:600}
+.dish .ph .ph-k{font-size:64px}
+@media(max-width:600px){.grid{grid-template-columns:1fr;gap:12px}.dish{flex-direction:row;min-height:128px}.dish .ph{aspect-ratio:auto;width:118px;flex:none}.dish .ph .ph-k{font-size:44px}.dish .tags{left:6px;top:6px;flex-direction:column;align-items:flex-start;gap:4px}.tg{font-size:10px;padding:2px 6px}.dish .bd{padding:12px 12px 12px 14px;gap:3px}.dish h4{font-size:19px}.dish p{font-size:12.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}}
+.empty{color:var(--mut);padding:30px 0;text-align:center;display:none}
+/* fly */
+.fly{position:fixed;z-index:200;width:46px;height:46px;border-radius:50%;background-size:cover;background-position:center;pointer-events:none;box-shadow:0 0 0 2px var(--gold);transition:transform .75s cubic-bezier(.5,-.3,.7,1),opacity .75s}
+/* floating cart bar (mobile) */
+.fbar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:70;display:flex;align-items:center;justify-content:space-between;background:var(--gold);color:#1a1207;border-radius:18px;padding:13px 18px;font-weight:600;box-shadow:0 20px 40px -10px rgba(0,0,0,.8);transform:translateY(140%);transition:transform .45s cubic-bezier(.2,.8,.2,1);border:0;cursor:pointer}
+.fbar.show{transform:none}
+@media(min-width:861px){.fbar{left:auto;right:24px;width:360px}}
+/* drawer */
+.ov{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:.35s}
+.ov.on{opacity:1;visibility:visible}
+.drawer{position:fixed;z-index:90;right:0;top:0;bottom:0;width:min(460px,100%);background:#100e0c;border-left:1px solid var(--line);transform:translateX(100%);transition:transform .5s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
+.drawer.on{transform:none}
+@media(max-width:600px){.drawer{top:auto;height:92svh;width:100%;border-left:0;border-top:1px solid var(--line);border-radius:22px 22px 0 0;transform:translateY(100%)}}
+.dh{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line)}
+.dh h3{font:600 26px "Cormorant Garamond"}
+.x{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:none;cursor:pointer;font-size:18px}
+.stepper{display:flex;gap:6px;padding:12px 20px 0}
+.stepper i{flex:1;height:3px;border-radius:3px;background:var(--line);transition:background .4s}
+.stepper i.on{background:var(--gold)}
+.db{flex:1;overflow:auto;padding:16px 20px}
+.df{padding:14px 20px calc(16px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#0d0b0a}
+.line{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.line img,.line .ph0{width:56px;height:56px;border-radius:12px;object-fit:cover;flex:none;background:#221d18;display:grid;place-items:center;font:700 22px "Noto Serif JP";color:rgba(212,175,106,.4)}
+.line .t{flex:1;min-width:0}
+.line .t b{display:block;font-weight:600;font-size:14px}
+.line .t small{color:var(--mut)}
+.tot{display:flex;justify-content:space-between;font-size:14px;color:var(--mut);margin:4px 0}
+.tot.big{font-size:19px;color:var(--txt);font-weight:600;margin-top:8px}
+.lbl{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:16px 0 7px}
+.inp{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;outline:0}
+.inp:focus{border-color:var(--gold)}
+textarea.inp{min-height:74px;resize:vertical}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg button{padding:14px;border-radius:14px;border:1px solid var(--line);background:var(--card);cursor:pointer;text-align:left}
+.seg button b{display:block}
+.seg button small{color:var(--mut);font-size:12px}
+.seg button.on{border-color:var(--gold);background:rgba(212,175,106,.1)}
+.slots{display:flex;gap:8px;flex-wrap:wrap}
+.slot{padding:9px 13px;border-radius:10px;border:1px solid var(--line);background:var(--card);cursor:pointer;font-size:13.5px}
+.slot.on{background:var(--gold);color:#1a1207;border-color:var(--gold);font-weight:600}
+.msg{white-space:pre-wrap;background:#0b1410;border:1px solid #1f3a2c;border-radius:14px;padding:14px;font-size:13px;color:#cfe9da;font-family:ui-monospace,Menlo,monospace}
+.okic{width:74px;height:74px;border-radius:50%;margin:10px auto 14px;background:rgba(212,175,106,.12);display:grid;place-items:center;font-size:34px;animation:pop .6s}
+@keyframes pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.1)}}
+.err{color:#ff8a70;font-size:13px;margin-top:8px;display:none}
+/* modal */
+.modal{position:fixed;z-index:95;left:50%;top:50%;width:min(520px,94vw);max-height:90svh;overflow:auto;background:#100e0c;border:1px solid var(--line);border-radius:22px;transform:translate(-50%,-46%) scale(.96);opacity:0;visibility:hidden;transition:.35s}
+.modal.on{transform:translate(-50%,-50%);opacity:1;visibility:visible}
+.modal .mi{aspect-ratio:16/10;background:linear-gradient(135deg,#221d18,#120f0d);display:grid;place-items:center;font:700 90px "Noto Serif JP";color:rgba(212,175,106,.18)}
+.modal .mi img{width:100%;height:100%;object-fit:cover}
+.modal .mb{padding:20px}
+.modal .x{position:absolute;right:12px;top:12px;background:rgba(11,10,9,.7)}
+/* booking */
+.book{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.formcard{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ppl{display:flex;gap:6px;flex-wrap:wrap}
+.ppl button{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:#120f0d;cursor:pointer}
+.ppl button.on{background:var(--gold);color:#1a1207;border-color:var(--gold);font-weight:600}
+@media(max-width:860px){.book{grid-template-columns:1fr}}
+/* qr */
+.qr{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;background:linear-gradient(135deg,#1a1714,#120f0d);border:1px solid var(--line);border-radius:26px;padding:34px}
+.qrbox{background:#fff;border-radius:18px;padding:14px;width:200px;position:relative}
+.qrbox::before{content:"";position:absolute;inset:-10px;border:1px solid var(--gold);border-radius:24px;opacity:.5}
+.qrbox img{width:100%}
+.qrbox .scan{position:absolute;left:14px;right:14px;height:2px;background:var(--red);box-shadow:0 0 12px var(--red);top:14px;animation:scan 2.4s ease-in-out infinite alternate}
+@keyframes scan{to{top:calc(100% - 16px)}}
+@media(max-width:700px){.qr{grid-template-columns:1fr;justify-items:center;text-align:center}}
+/* reviews */
+.revs{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;margin-top:28px;scrollbar-width:none}
+.revs::-webkit-scrollbar{display:none}
+.rev{flex:0 0 min(340px,84vw);scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;position:relative}
+.rev::before{content:"“";position:absolute;right:18px;top:-6px;font:600 90px "Cormorant Garamond";color:rgba(192,57,43,.35)}
+.rev .st{color:var(--gold);letter-spacing:2px}
+.rev p{margin:10px 0 14px;font:500 19px/1.35 "Cormorant Garamond";color:#e7dfd2}
+.rev small{color:var(--mut)}
+.score{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.score b{font:600 64px/1 "Cormorant Garamond";color:var(--gold2)}
+/* info */
+.info{display:grid;grid-template-columns:1fr 1.2fr;gap:24px}
+.hours{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px}
+.hrow{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.hrow.today{color:var(--gold2);font-weight:600}
+.open{display:inline-flex;align-items:center;gap:8px;font-size:13px;padding:6px 12px;border-radius:99px;background:rgba(159,216,143,.1);color:#9fd88f;margin-bottom:12px}
+.open.cl{background:rgba(255,138,112,.1);color:#ff8a70}
+.open::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.map{border-radius:22px;overflow:hidden;border:1px solid var(--line);min-height:360px;filter:grayscale(.4) contrast(1.05)}
+.map iframe{width:100%;height:100%;min-height:360px;border:0;filter:invert(.9) hue-rotate(180deg)}
+.contacts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.contacts a{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center;font-size:13.5px}
+.contacts a b{display:block;font-size:22px;margin-bottom:4px}
+@media(max-width:860px){.info{grid-template-columns:1fr}.contacts{grid-template-columns:1fr 1fr 1fr}}
+footer{border-top:1px solid var(--line);padding:40px 0 110px;color:var(--mut);font-size:13px}
+footer .credit{margin-top:18px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:#7d7466}
+.toast{position:fixed;left:50%;bottom:90px;z-index:300;transform:translate(-50%,20px);opacity:0;background:#1f1a15;border:1px solid var(--gold);color:var(--gold2);padding:10px 18px;border-radius:99px;font-size:13.5px;transition:.35s;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.fade{opacity:1;transform:none}.hero h1 .w span{transform:none}}
+</style>
+</head>
+<body>
+<div id="loader"><div><div class="k">寿</div><div class="l"></div></div></div>
+<div class="demobar">✦ DEMO non ufficiale realizzata da Vlad per Sushi Zun · foto illustrative e prezzi d'esempio ✦</div>
+
+<nav id="nav"><div class="wrap">
+  <a href="#top" class="logo"><span class="seal">尊</span><span><b>SUSHI ZUN</b><small>Ristorante</small></span></a>
+  <div class="links"><a href="#menu">Menù</a><a href="#ayce">All you can eat</a><a href="#prenota">Prenota</a><a href="#recensioni">Recensioni</a><a href="#dove">Dove siamo</a></div>
+  <button class="cartbtn" id="cartTop" aria-label="Carrello">🛍 <span class="n" id="cnt">0</span></button>
+</div></nav>
+
+<header class="hero" id="top">
+  <div class="bg" id="heroBg"></div>
+  <canvas id="petals"></canvas>
+  <div class="kanji-v" aria-hidden="true">寿司尊</div>
+  <div class="in">
+    <span class="eyebrow fade" style="transition-delay:.2s">Cucina giapponese &amp; cinese</span>
+    <h1><span class="w"><span>Sushi</span></span> <span class="w"><span style="transition-delay:.12s"><em>Zun</em></span></span></h1>
+    <p class="sub fade" style="transition-delay:.45s">Sushi, crudi e cucina cinese a Ospital Monacale, a due passi da Molinella. Ora anche online: scegli dal menù, ordina da asporto o a domicilio, prenota il tavolo in pochi secondi.</p>
+    <div class="cta fade" style="transition-delay:.6s">
+      <a href="#menu" class="btn red">🍣 Ordina online</a>
+      <a href="#prenota" class="btn ghost">Prenota un tavolo</a>
+    </div>
+    <div class="chips fade" style="transition-delay:.75s">
+      <span class="chip">★ <b>4,3</b> su Google · 500+ recensioni</span>
+      <span class="chip">🥢 All you can eat</span>
+      <span class="chip">🛵 Asporto &amp; consegna</span>
+      <span class="chip" id="openChip">⏱ Pranzo e cena, tutti i giorni</span>
+    </div>
+  </div>
+  <div class="scrollhint" aria-hidden="true"></div>
+</header>
+
+<div class="marq" aria-hidden="true"><div>
+<span>Uramaki delizia</span><i>✦</i><span>Sashimi misto</span><i>✦</i><span>Ravioli</span><i>✦</i><span>Tartare di salmone</span><i>✦</i><span>Carpaccio con stracciatella</span><i>✦</i><span>Mango roll</span><i>✦</i><span>Mochi</span><i>✦</i>
+<span>Uramaki delizia</span><i>✦</i><span>Sashimi misto</span><i>✦</i><span>Ravioli</span><i>✦</i><span>Tartare di salmone</span><i>✦</i><span>Carpaccio con stracciatella</span><i>✦</i><span>Mango roll</span><i>✦</i><span>Mochi</span><i>✦</i>
+</div></div>
+
+<section><div class="wrap story">
+  <div class="rv">
+    <span class="eyebrow">La nostra cucina</span>
+    <h2 class="h2">Due tradizioni,<br><em>una tavola.</em></h2>
+    <p class="lead">Dal sushi ai crudi fino ai classici cinesi come ravioli e spaghetti di soia. I clienti apprezzano le porzioni da 4 pezzi: si assaggiano più varietà nella stessa cena.</p>
+    <div class="facts">
+      <div class="fact"><b>4,3★</b><span>Google, 500+ recensioni</span></div>
+      <div class="fact"><b>7/7</b><span>pranzo e cena</span></div>
+      <div class="fact"><b>P</b><span>parcheggio gratuito</span></div>
+    </div>
+    <p class="note">Dati da schede pubbliche online (Google via RestaurantGuru/Sluurpy). Da confermare con il ristorante.</p>
+  </div>
+  <div class="pics rv">
+    <img class="p1" src="img/sashimi.webp" alt="Sashimi (foto illustrativa)" loading="lazy">
+    <img class="p2" src="img/ravioli.webp" alt="Ravioli (foto illustrativa)" loading="lazy">
+    <div class="badge"><div><b>尊</b>Sushi Zun</div></div>
+  </div>
+</div></section>
+
+<section class="ayce" id="ayce"><div class="wrap">
+  <div class="rv">
+    <span class="eyebrow">All you can eat</span>
+    <h2 class="h2">Ordina quanto vuoi,<br><em>direttamente dal telefono.</em></h2>
+    <p class="lead">Con il sito nuovo il menù all you can eat può diventare digitale: il cliente scansiona il QR al tavolo e manda gli ordini a giri, senza fogli di carta.</p>
+  </div>
+  <div class="steps">
+    <div class="step rv"><span class="num">一</span><h4>Scansiona</h4><p>QR code sul tavolo: il menù si apre subito sul telefono.</p></div>
+    <div class="step rv"><span class="num">二</span><h4>Scegli</h4><p>Foto, filtri vegetariano e piccante, allergeni a portata di mano.</p></div>
+    <div class="step rv"><span class="num">三</span><h4>Ordina a giri</h4><p>Ogni giro arriva in cucina in ordine, senza errori di tavolo.</p></div>
+    <div class="step rv"><span class="num">四</span><h4>Gusta</h4><p>Meno attese per il personale, più tempo per i clienti.</p></div>
+  </div>
+  <div class="price-tbc rv">
+    <div><small class="lbl" style="margin:0">Pranzo</small><b>€ —</b> <small style="color:var(--mut)">da confermare</small></div>
+    <div><small class="lbl" style="margin:0">Cena</small><b>€ —</b> <small style="color:var(--mut)">da confermare</small></div>
+  </div>
+</div></section>
+
+<section id="menu"><div class="wrap">
+  <div class="menu-head rv">
+    <div><span class="eyebrow">Menù &amp; ordini online</span><h2 class="h2">Il <em>menù</em></h2>
+    <p class="lead">Tocca <b style="color:var(--red2)">+</b> per aggiungere al carrello. Ordini da asporto o a domicilio, con orario di ritiro a tua scelta.</p></div>
+  </div>
+  <p class="note">Piatti presi da menù e recensioni pubbliche. Prezzi d'esempio, foto illustrative, tag indicativi: tutto da confermare con il ristorante.</p>
+  <div class="tools">
+    <label class="search">🔍<input id="q" type="search" placeholder="Cerca: salmone, ravioli, mango…" autocomplete="off"></label>
+    <div class="tabs" id="tabs"></div>
+    <div class="filters" id="filters">
+      <button class="flt" data-f="veg">🌱 Vegetariano</button>
+      <button class="flt" data-f="hot">🌶 Piccante</button>
+      <button class="flt" data-f="top">★ Più amati</button>
+      <button class="flt" data-f="crudo">🐟 Crudo</button>
+    </div>
+  </div>
+  <div id="menuList"></div>
+  <div class="empty" id="empty">Nessun piatto trovato. Prova un'altra ricerca.</div>
+</div></section>
+
+<section id="prenota" style="background:var(--bg2);border-block:1px solid var(--line)"><div class="wrap book">
+  <div class="rv">
+    <span class="eyebrow">Prenotazioni</span>
+    <h2 class="h2">Il tuo tavolo,<br><em>in 20 secondi.</em></h2>
+    <p class="lead">Niente telefonate nelle ore di punta: il cliente compila, e la richiesta arriva già pronta su WhatsApp del ristorante, con nome, persone, data e ora.</p>
+    <p class="note">Nella demo il messaggio viene mostrato come anteprima: il ristorante ha un numero fisso, il WhatsApp va configurato con il sito vero.</p>
+  </div>
+  <form class="formcard rv" id="bookForm" novalidate>
+    <label class="lbl" style="margin-top:0">Nome</label><input class="inp" id="bName" placeholder="Mario Rossi" required>
+    <label class="lbl">Persone</label><div class="ppl" id="ppl"></div>
+    <div class="g2"><div><label class="lbl">Data</label><input class="inp" type="date" id="bDate" required></div>
+    <div><label class="lbl">Ora</label><select class="inp" id="bTime"></select></div></div>
+    <label class="lbl">Telefono</label><input class="inp" id="bTel" type="tel" placeholder="333 1234567">
+    <label class="lbl">Note</label><input class="inp" id="bNote" placeholder="Seggiolone, all you can eat, compleanno…">
+    <div class="err" id="bErr">Inserisci nome e data.</div>
+    <button class="btn red" style="width:100%;margin-top:18px" type="submit">Richiedi prenotazione</button>
+  </form>
+</div></section>
+
+<section><div class="wrap">
+  <div class="qr rv">
+    <div class="qrbox"><img src="img/qr.svg" alt="QR menù"><div class="scan"></div></div>
+    <div>
+      <span class="eyebrow">Menù QR</span>
+      <h2 class="h2">Un QR su ogni <em>tavolo</em></h2>
+      <p class="lead">Stampato sul tavolo o sulla vetrina, apre questo menù con foto e prezzi sempre aggiornati. Cambi un prezzo una volta e cambia ovunque. Prova a inquadrarlo con il telefono.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="recensioni"><div class="wrap">
+  <div class="rv score">
+    <div><span class="eyebrow">Recensioni</span><h2 class="h2">Cosa dicono <em>i clienti</em></h2></div>
+    <div style="margin-left:auto;text-align:right"><b>4,3</b><div style="color:var(--gold)">★★★★★</div><small style="color:var(--mut)">Google · 500+ recensioni</small></div>
+  </div>
+  <div class="revs rv">
+    <div class="rev"><div class="st">★★★★★</div><p>Ottimo cibo e servizio, i piatti presentati magnificamente, personale competente, preciso e cortese.</p><small>Pasquale · recensione online</small></div>
+    <div class="rev"><div class="st">★★★★★</div><p>Apprezzo in particolare che le porzioni che altrove sono da 8 pezzi qui siano da 4, dando così la possibilità di provare molte più varietà.</p><small>Angela · recensione online</small></div>
+    <div class="rev"><div class="st">★★★★</div><p>Abbiamo cenato all you can eat… fanno alcune chicche fuori dai grandi classici (carpaccio di salmone con stracciatella buonissimo).</p><small>Niccolò · recensione online</small></div>
+    <div class="rev"><div class="st">★★★★</div><p>Personale molto gentile e cibo buonissimo.</p><small>Elisa · Google</small></div>
+    <div class="rev"><div class="st">★★★★★</div><p>Ottimo ristorante, menù molto buono sui piatti più importanti, servizio veloce e professionale.</p><small>Andrea · recensione online</small></div>
+  </div>
+  <p class="note">Estratti di recensioni pubbliche (Google, Sluurpy, RestaurantGuru). Sul sito vero si collegano le recensioni Google in automatico.</p>
+</div></section>
+
+<section id="dove" style="padding-top:40px"><div class="wrap">
+  <div class="rv"><span class="eyebrow">Dove siamo</span><h2 class="h2">Vieni a <em>trovarci</em></h2></div>
+  <div class="info" style="margin-top:24px">
+    <div class="hours rv">
+      <span class="open" id="openBadge">—</span>
+      <div id="hoursList"></div>
+      <p class="note">Orari dalla scheda Google (12:00–15:00 · 18:50–23:00). Altri elenchi riportano orari diversi: da confermare.</p>
+      <div style="margin-top:18px;font-size:14px">
+        <b class="serif" style="font-size:22px">Via Imperiale, 8/A</b><br>44011 Ospital Monacale (Argenta, FE)<br><span style="color:var(--mut)">al confine con Molinella · parcheggio gratuito</span>
+      </div>
+    </div>
+    <div class="map rv"><iframe loading="lazy" title="Mappa Sushi Zun" src="https://maps.google.com/maps?q=Ristorante%20Sushi%20Zun%2C%20Via%20Imperiale%208%2FA%2C%2044011%20Argenta%20FE&z=15&output=embed"></iframe></div>
+  </div>
+  <div class="contacts rv">
+    <a href="tel:+39051882248"><b>📞</b>051 882248</a>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=Via%20Imperiale%208%2FA%2044011%20Argenta%20FE" target="_blank" rel="noopener"><b>🧭</b>Indicazioni</a>
+    <a href="https://www.facebook.com/1651233501591508" target="_blank" rel="noopener"><b>ⓕ</b>Facebook</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="logo"><span class="seal">尊</span><span><b>SUSHI ZUN</b><small>Ristorante</small></span></div>
+  <p style="margin-top:14px">Via Imperiale 8/A, 44011 Ospital Monacale (FE) · Tel. 051 882248</p>
+  <div class="credit">Demo realizzata da Vlad · sito di prova non ufficiale, non affiliato al ristorante. Foto illustrative, prezzi d'esempio, ordini e prenotazioni non vengono inviati davvero.</div>
+</div></footer>
+
+<button class="fbar" id="fbar"><span id="fbarN">0 piatti</span><span>Vedi ordine · <b id="fbarT">€0,00</b> →</span></button>
+<div class="toast" id="toast"></div>
+<div class="ov" id="ov"></div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true"><button class="x" id="mX">✕</button><div class="mi" id="mImg"></div><div class="mb" id="mBody"></div></div>
+
+<aside class="drawer" id="drawer" aria-label="Ordine">
+  <div class="dh"><h3 id="dTitle">Il tuo ordine</h3><button class="x" id="dX">✕</button></div>
+  <div class="stepper"><i class="on"></i><i></i><i></i></div>
+  <div class="db" id="dBody"></div>
+  <div class="df" id="dFoot"></div>
+</aside>
+
+<script>
+// ===== config =====
+const WA_NUMBER = ""; // il ristorante ha solo fisso 051 882248: con il sito vero si inserisce qui il loro WhatsApp
+const SITE = "Sushi Zun";
+// ===== data =====
+const CATS=[
+ {id:"sushi",n:"Sushi",jp:"寿司"},
+ {id:"crudi",n:"Crudi & tartare",jp:"刺身"},
+ {id:"cinese",n:"Cucina cinese",jp:"中華"},
+ {id:"dolci",n:"Dolci & frutta",jp:"甘味"}];
+const M=[
+ {id:1,c:"sushi",n:"Uramaki delizia",d:"Il roll più consigliato dai clienti. Composizione da confermare con il ristorante.",p:9.5,img:"uramaki",t:["top","crudo"]},
+ {id:2,c:"sushi",n:"Nigiri mix e gunkan",d:"Selezione di nigiri e gunkan.",p:11,img:"nigiri",t:["crudo"]},
+ {id:3,c:"sushi",n:"Hosomaki",d:"Piccoli maki con alga all'esterno.",p:5,t:["crudo"]},
+ {id:4,c:"sushi",n:"Mango roll",d:"Roll con mango, tra i preferiti dei clienti.",p:8.5,t:["top"]},
+ {id:5,c:"sushi",n:"Cono maguro",d:"Temaki a cono con tonno.",p:4.5,t:["crudo"]},
+ {id:6,c:"crudi",n:"Sashimi misto",d:"Fettine di pesce crudo misto.",p:14,img:"sashimi",t:["top","crudo"]},
+ {id:7,c:"crudi",n:"Tartare di salmone",d:"Salmone battuto al coltello.",p:9,img:"tartare",t:["crudo"]},
+ {id:8,c:"crudi",n:"Carpaccio di salmone e tonno",d:"Fettine sottili di salmone e tonno.",p:10,t:["crudo"]},
+ {id:9,c:"crudi",n:"Carpaccio di salmone con stracciatella",d:"Una delle «chicche fuori dai classici» citate nelle recensioni.",p:10.5,img:"carpaccio",t:["top","crudo"]},
+ {id:10,c:"crudi",n:"Chirashi di salmone",d:"Ciotola di riso con salmone (in elenco come «Chirurgia salmone»: nome da confermare).",p:12,t:["crudo"]},
+ {id:11,c:"cinese",n:"Ravioli",d:"Bestseller della casa. Ripieno e cottura da confermare.",p:5,img:"ravioli",t:["top"]},
+ {id:12,c:"cinese",n:"Involtini primavera con gamberi",d:"Croccanti, con gamberi.",p:4.5,img:"involtini",t:[]},
+ {id:13,c:"cinese",n:"Spaghetti di soia con gamberi e verdure",d:"Saltati con gamberi e verdure.",p:7.5,img:"spaghetti",t:[]},
+ {id:14,c:"cinese",n:"Patate piccanti",d:"Citate nelle recensioni come «davvero uniche».",p:5,t:["veg","hot"]},
+ {id:15,c:"cinese",n:"Tagliatelle fredde",d:"Citate nelle recensioni tra le opzioni vegane. Da confermare.",p:6.5,t:["veg"]},
+ {id:16,c:"cinese",n:"Alghette",d:"Insalata di alghe.",p:4,t:["veg"]},
+ {id:17,c:"dolci",n:"Mochi",d:"Bestseller tra i dolci.",p:4.5,img:"mochi",t:["veg","top"]},
+ {id:18,c:"dolci",n:"Ananas",d:"Ananas fresco.",p:3.5,t:["veg"]},
+ {id:19,c:"dolci",n:"Biscotti della fortuna",d:"Per chiudere con un messaggio.",p:1.5,t:["veg"]}];
+const TAGL={veg:["veg","🌱 veg"],hot:["hot","🌶 piccante"],top:["top","★ top"],crudo:["",""]};
+const KJ={sushi:"寿",crudi:"刺",cinese:"中",dolci:"甘"};
+// hours (Google listing, da confermare): daily 12:00-15:00, 18:50-23:00
+const H=[[720,900],[1130,1380]];
+const DAYS=["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"];
+// ===== helpers =====
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const eur=v=>"€"+v.toFixed(2).replace(".",",");
+const pad=n=>String(n).padStart(2,"0");
+const hm=m=>pad(Math.floor(m/60))+":"+pad(m%60);
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("on"),1800)}
+// ===== loader & hero =====
+window.addEventListener("load",()=>{setTimeout(()=>{$("#loader").classList.add("done");document.body.classList.add("ready")},900)});
+setTimeout(()=>{$("#loader").classList.add("done");document.body.classList.add("ready")},2600);
+const nav=$("#nav"),hb=$("#heroBg");
+let ticking=false;
+addEventListener("scroll",()=>{if(!ticking){requestAnimationFrame(()=>{const y=scrollY;nav.classList.toggle("solid",y>40);if(y<innerHeight*1.2)hb.style.transform=`translate3d(0,${y*.35}px,0) scale(${1.08+y*0.0002})`;ticking=false});ticking=true}},{passive:true});
+// petals + gold dust
+(function(){const c=$("#petals"),x=c.getContext("2d");let W,Hh,P=[];const dpr=Math.min(devicePixelRatio||1,2);
+function rs(){W=c.width=c.offsetWidth*dpr;Hh=c.height=c.offsetHeight*dpr}rs();addEventListener("resize",rs);
+const N=innerWidth<700?18:34;
+for(let i=0;i<N;i++)P.push(mk(true));
+function mk(init){return{x:Math.random()*W,y:init?Math.random()*Hh:-20,r:(Math.random()*5+3)*dpr,s:Math.random()*.6+.3,a:Math.random()*6.28,v:Math.random()*.02+.01,g:Math.random()<.45}}
+function f(){x.clearRect(0,0,W,Hh);for(const p of P){p.y+=p.s*dpr;p.x+=Math.sin(p.a)*.6*dpr;p.a+=p.v;if(p.y>Hh+20)Object.assign(p,mk());
+x.save();x.translate(p.x,p.y);x.rotate(p.a);if(p.g){x.fillStyle="rgba(241,217,164,.55)";x.beginPath();x.arc(0,0,p.r*.28,0,7);x.fill()}else{x.fillStyle="rgba(224,83,63,.5)";x.beginPath();x.ellipse(0,0,p.r,p.r*.55,0,0,7);x.fill()}x.restore()}
+requestAnimationFrame(f)}if(!matchMedia("(prefers-reduced-motion:reduce)").matches)f()})();
+// reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("on");io.unobserve(e.target)}}),{threshold:.12,rootMargin:"0px 0px -40px 0px"});
+function observe(){$$(".rv:not(.on)").forEach((el,i)=>{el.style.transitionDelay=(el.parentElement.classList.contains("steps")||el.parentElement.classList.contains("grid")?(i%4)*.08:0)+"s";io.observe(el)})}
+// ===== menu render =====
+let filt=new Set(),query="";
+const cart=JSON.parse(localStorage.getItem("zunCart")||"{}");
+function save(){localStorage.setItem("zunCart",JSON.stringify(cart))}
+function imgTag(m,cls=""){return m.img?`<img src="img/${m.img}.webp" alt="${m.n} (foto illustrativa)" loading="lazy" ${cls}>`:`<div class="ph-k">${KJ[m.c]}</div>`}
+function ctrl(m){const q=cart[m.id]||0;return q?`<div class="qtyc"><button data-dec="${m.id}" aria-label="meno">−</button><span>${q}</span><button data-inc="${m.id}" aria-label="più">+</button></div>`:`<button class="add" data-add="${m.id}" aria-label="Aggiungi ${m.n}">+</button>`}
+function render(){
+ $("#tabs").innerHTML=`<button class="tab on" data-go="top-menu">Tutto</button>`+CATS.map(c=>`<button class="tab" data-go="${c.id}">${c.n}</button>`).join("");
+ let html="",any=false;
+ for(const c of CATS){
+  const items=M.filter(m=>m.c===c.id&&[...filt].every(f=>m.t.includes(f))&&(!query||(m.n+" "+m.d).toLowerCase().includes(query)));
+  if(!items.length)continue;any=true;
+  html+=`<div class="cat" id="cat-${c.id}"><h3 class="rv">${c.n} <span class="jp">${c.jp}</span></h3><div class="grid">`+items.map(m=>`
+   <article class="dish rv" data-open="${m.id}">
+    <div class="ph">${imgTag(m)}<div class="tags">${m.t.filter(t=>TAGL[t][0]).map(t=>`<span class="tg ${TAGL[t][0]}">${TAGL[t][1]}</span>`).join("")}</div></div>
+    <div class="bd"><h4>${m.n}</h4><p>${m.d}</p>
+    <div class="row"><span class="price">${eur(m.p)}<small>esempio</small></span><span class="ctl" data-ctl="${m.id}">${ctrl(m)}</span></div></div>
+   </article>`).join("")+`</div></div>`}
+ $("#menuList").innerHTML=html;$("#empty").style.display=any?"none":"block";observe();
+}
+function refreshCtl(id){$$(`[data-ctl="${id}"]`).forEach(e=>{const m=M.find(x=>x.id==id);e.innerHTML=ctrl(m)})}
+$("#q").addEventListener("input",e=>{query=e.target.value.trim().toLowerCase();render()});
+$("#filters").addEventListener("click",e=>{const b=e.target.closest(".flt");if(!b)return;const f=b.dataset.f;filt.has(f)?filt.delete(f):filt.add(f);b.classList.toggle("on");render()});
+$("#tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(!b)return;$$(".tab").forEach(t=>t.classList.remove("on"));b.classList.add("on");const el=b.dataset.go==="top-menu"?$("#menu"):$("#cat-"+b.dataset.go);el&&el.scrollIntoView({behavior:"smooth"})});
+// ===== cart =====
+function count(){return Object.values(cart).reduce((a,b)=>a+b,0)}
+function sub(){return Object.entries(cart).reduce((a,[id,q])=>a+M.find(m=>m.id==id).p*q,0)}
+function upd(){const n=count();$("#cnt").textContent=n;$("#fbarN").textContent=n+(n==1?" piatto":" piatti");$("#fbarT").textContent=eur(sub());$("#fbar").classList.toggle("show",n>0&&!$("#drawer").classList.contains("on"));save()}
+function fly(fromEl,m){const r=fromEl.getBoundingClientRect(),t=$("#cartTop").getBoundingClientRect();const d=document.createElement("div");d.className="fly";d.style.left=r.left+"px";d.style.top=r.top+"px";d.style.backgroundImage=m.img?`url(img/${m.img}.webp)`:"none";if(!m.img)d.style.background="var(--red)";document.body.appendChild(d);requestAnimationFrame(()=>{d.style.transform=`translate(${t.left-r.left}px,${t.top-r.top}px) scale(.35)`;d.style.opacity=".4"});setTimeout(()=>{d.remove();const b=$("#cartTop");b.classList.remove("bump");void b.offsetWidth;b.classList.add("bump")},760)}
+function add(id,el){cart[id]=(cart[id]||0)+1;const m=M.find(x=>x.id==id);if(el)fly(el,m);refreshCtl(id);upd();toast("Aggiunto: "+m.n);if(navigator.vibrate)navigator.vibrate(12)}
+function dec(id){cart[id]--;if(cart[id]<=0)delete cart[id];refreshCtl(id);upd()}
+document.addEventListener("click",e=>{
+ const a=e.target.closest("[data-add]"),i=e.target.closest("[data-inc]"),d=e.target.closest("[data-dec]");
+ if(a){e.stopPropagation();add(+a.dataset.add,a);if(step===0&&$("#drawer").classList.contains("on"))drawCart();return}
+ if(i){e.stopPropagation();add(+i.dataset.inc);if($("#drawer").classList.contains("on")&&step===0)drawCart();return}
+ if(d){e.stopPropagation();dec(+d.dataset.dec);if($("#drawer").classList.contains("on")&&step===0)drawCart();return}
+ const o=e.target.closest("[data-open]");if(o)openModal(+o.dataset.open);
+});
+// modal
+function openModal(id){const m=M.find(x=>x.id==id);$("#mImg").innerHTML=m.img?`<img src="img/${m.img}.webp" alt="${m.n}">`:KJ[m.c];
+ $("#mBody").innerHTML=`<span class="eyebrow">${CATS.find(c=>c.id==m.c).n}</span><h3 class="serif" style="font-size:34px;margin:8px 0">${m.n}</h3><p style="color:var(--mut)">${m.d}</p><p class="note">Allergeni e ingredienti: da confermare con il ristorante. Prezzo d'esempio.</p><div class="row" style="display:flex;justify-content:space-between;align-items:center;margin-top:18px"><span class="price" style="font-size:22px">${eur(m.p)}</span><button class="btn red" data-add="${m.id}" id="mAdd">Aggiungi al carrello</button></div>`;
+ $("#modal").classList.add("on");$("#ov").classList.add("on");document.body.classList.add("lock")}
+function closeAll(){$("#modal").classList.remove("on");$("#drawer").classList.remove("on");$("#ov").classList.remove("on");document.body.classList.remove("lock");upd()}
+$("#mX").onclick=closeAll;$("#ov").onclick=closeAll;$("#dX").onclick=closeAll;
+addEventListener("keydown",e=>{if(e.key==="Escape")closeAll()});
+// ===== checkout =====
+let step=0;const ord={mode:"asporto",day:0,slot:"",name:"",tel:"",addr:"",note:""};
+function openCart(){step=0;drawCart();$("#drawer").classList.add("on");$("#ov").classList.add("on");$("#modal").classList.remove("on");document.body.classList.add("lock");$("#fbar").classList.remove("show")}
+$("#cartTop").onclick=openCart;$("#fbar").onclick=openCart;
+function setStep(n){step=n;$$(".stepper i").forEach((e,i)=>e.classList.toggle("on",i<=n))}
+function lines(){return Object.entries(cart).map(([id,q])=>{const m=M.find(x=>x.id==id);return`<div class="line">${m.img?`<img src="img/${m.img}.webp" alt="">`:`<div class="ph0">${KJ[m.c]}</div>`}<div class="t"><b>${m.n}</b><small>${eur(m.p)} · esempio</small></div><div class="qtyc"><button data-dec="${m.id}">−</button><span>${q}</span><button data-inc="${m.id}">+</button></div></div>`}).join("")}
+function fee(){return ord.mode==="consegna"?2.5:0}
+function drawCart(){setStep(0);$("#dTitle").textContent="Il tuo ordine";
+ if(!count()){$("#dBody").innerHTML=`<div style="text-align:center;padding:60px 10px;color:var(--mut)"><div style="font:700 60px 'Noto Serif JP';color:rgba(212,175,106,.25)">空</div>Il carrello è vuoto.<br>Aggiungi qualcosa dal menù.</div>`;$("#dFoot").innerHTML=`<button class="btn gold" style="width:100%" onclick="closeAll();document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Vai al menù</button>`;return}
+ $("#dBody").innerHTML=lines()+`<label class="lbl">Note per la cucina</label><textarea class="inp" id="oNote" placeholder="Es. senza wasabi, bacchette extra, allergie…">${ord.note}</textarea>`;
+ $("#oNote").oninput=e=>ord.note=e.target.value;
+ $("#dFoot").innerHTML=`<div class="tot big"><span>Subtotale</span><span>${eur(sub())}</span></div><button class="btn red" style="width:100%;margin-top:12px" id="toStep1">Continua →</button>`;
+ $("#toStep1").onclick=drawDetails}
+function slotsFor(day){const now=new Date(),base=now.getHours()*60+now.getMinutes()+30;const out=[];
+ for(const [a,b] of H){let s=Math.ceil(Math.max(a+10,0)/15)*15;for(let m=s;m<=b-15;m+=15){if(day===0&&m<base)continue;out.push(hm(m))}}return out}
+function drawDetails(){setStep(1);$("#dTitle").textContent="Ritiro o consegna";
+ const sl=slotsFor(ord.day);if(!sl.includes(ord.slot))ord.slot=sl[0]||"";
+ const dlab=d=>{const x=new Date();x.setDate(x.getDate()+d);return(d===0?"Oggi":d===1?"Domani":DAYS[x.getDay()])+" "+x.getDate()+"/"+(x.getMonth()+1)};
+ $("#dBody").innerHTML=`
+ <div class="seg"><button data-mode="asporto" class="${ord.mode==="asporto"?"on":""}"><b>🥡 Asporto</b><small>Ritiri al ristorante</small></button><button data-mode="consegna" class="${ord.mode==="consegna"?"on":""}"><b>🛵 Consegna</b><small>A domicilio · zona da confermare</small></button></div>
+ <label class="lbl">Giorno</label><div class="slots">${[0,1,2].map(d=>`<button class="slot ${ord.day===d?"on":""}" data-day="${d}">${dlab(d)}</button>`).join("")}</div>
+ <label class="lbl">${ord.mode==="consegna"?"Orario di consegna":"Orario di ritiro"}</label>
+ <div class="slots">${sl.length?sl.map(s=>`<button class="slot ${s===ord.slot?"on":""}" data-slot="${s}">${s}</button>`).join(""):`<span style="color:var(--mut);font-size:13px">Oggi non ci sono più fasce disponibili: scegli domani.</span>`}</div>
+ <label class="lbl">Nome</label><input class="inp" id="oName" value="${ord.name}" placeholder="Il tuo nome">
+ <label class="lbl">Telefono</label><input class="inp" id="oTel" type="tel" value="${ord.tel}" placeholder="333 1234567">
+ ${ord.mode==="consegna"?`<label class="lbl">Indirizzo</label><input class="inp" id="oAddr" value="${ord.addr}" placeholder="Via, numero, paese">`:""}
+ <div class="err" id="oErr"></div>`;
+ $$("[data-mode]").forEach(b=>b.onclick=()=>{keep();ord.mode=b.dataset.mode;drawDetails()});
+ $$("[data-day]").forEach(b=>b.onclick=()=>{keep();ord.day=+b.dataset.day;drawDetails()});
+ $$("[data-slot]").forEach(b=>b.onclick=()=>{keep();ord.slot=b.dataset.slot;$$("[data-slot]").forEach(x=>x.classList.toggle("on",x===b))});
+ $("#dFoot").innerHTML=`<div class="tot"><span>Subtotale</span><span>${eur(sub())}</span></div>${fee()?`<div class="tot"><span>Consegna (esempio)</span><span>${eur(fee())}</span></div>`:""}<div style="display:flex;gap:10px;margin-top:12px"><button class="btn ghost" id="back0">←</button><button class="btn red" style="flex:1" id="toStep2">Riepilogo →</button></div>`;
+ $("#back0").onclick=()=>{keep();drawCart()};
+ $("#toStep2").onclick=()=>{keep();const er=$("#oErr");let m="";if(!ord.slot)m="Scegli un orario.";else if(!ord.name.trim())m="Inserisci il tuo nome.";else if(ord.mode==="consegna"&&!ord.addr.trim())m="Inserisci l'indirizzo di consegna.";if(m){er.textContent=m;er.style.display="block";return}drawSummary()}}
+function keep(){const g=id=>{const e=$(id);return e?e.value:null};const n=g("#oName"),t=g("#oTel"),a=g("#oAddr");if(n!==null)ord.name=n;if(t!==null)ord.tel=t;if(a!==null)ord.addr=a}
+function dayStr(){const x=new Date();x.setDate(x.getDate()+ord.day);return(ord.day===0?"oggi":ord.day===1?"domani":DAYS[x.getDay()].toLowerCase())+" "+pad(x.getDate())+"/"+pad(x.getMonth()+1)}
+function orderText(){let t=`🍣 *Nuovo ordine – ${SITE}*\n\n`;for(const[id,q]of Object.entries(cart)){const m=M.find(x=>x.id==id);t+=`• ${q}× ${m.n} – ${eur(m.p*q)}\n`}
+ t+=`\n${ord.mode==="consegna"?"🛵 *Consegna*":"🥡 *Asporto*"} – ${dayStr()} ore ${ord.slot}\n👤 ${ord.name}${ord.tel?" · "+ord.tel:""}\n`;if(ord.mode==="consegna")t+=`📍 ${ord.addr}\n`;if(ord.note.trim())t+=`📝 ${ord.note.trim()}\n`;
+ if(fee())t+=`Consegna: ${eur(fee())}\n`;t+=`\n*Totale: ${eur(sub()+fee())}*\n(ordine di prova dal sito demo)`;return t}
+function drawSummary(){setStep(2);$("#dTitle").textContent="Riepilogo";
+ $("#dBody").innerHTML=`<p style="color:var(--mut);font-size:13.5px;margin-bottom:10px">Questo è il messaggio che arriverebbe al ristorante su WhatsApp, già pronto:</p><div class="msg">${orderText().replace(/</g,"&lt;")}</div><p class="note">Demo: con il sito vero il cliente preme «Invia» e l'ordine arriva sul WhatsApp del ristorante (oppure su tablet/email). Pagamento al ritiro o alla consegna.</p>`;
+ $("#dFoot").innerHTML=`<div class="tot big"><span>Totale</span><span>${eur(sub()+fee())}</span></div><div style="display:flex;gap:10px;margin-top:12px"><button class="btn ghost" id="back1">←</button><button class="btn red" style="flex:1" id="send">${WA_NUMBER?"Invia su WhatsApp":"Invia ordine (demo)"}</button></div>`;
+ $("#back1").onclick=drawDetails;$("#send").onclick=sendOrder}
+function sendOrder(){const txt=orderText();
+ if(WA_NUMBER){open("https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(txt),"_blank");}
+ $("#dTitle").textContent="Ordine ricevuto!";
+ $("#dBody").innerHTML=`<div style="text-align:center"><div class="okic">✓</div><h3 class="serif" style="font-size:30px">Grazie, ${ord.name.split(" ")[0]}!</h3><p style="color:var(--mut);margin:8px 0 18px">${ord.mode==="consegna"?"Consegna":"Ritiro"} ${dayStr()} alle <b style="color:var(--gold2)">${ord.slot}</b>.</p></div>
+ <div class="note" style="margin-bottom:14px">Questa è una <b>demo</b>: l'ordine non è stato inviato al ristorante. Per ordinare davvero oggi: <a href="tel:+39051882248" style="color:var(--gold2)">051 882248</a>.</div>
+ <a class="btn ghost" style="width:100%" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(txt)}">Vedi il messaggio in WhatsApp (anteprima)</a>`;
+ $("#dFoot").innerHTML=`<button class="btn gold" style="width:100%" id="newOrd">Nuovo ordine</button>`;
+ $("#newOrd").onclick=()=>{for(const k in cart)delete cart[k];ord.note="";render();upd();closeAll()};}
+// ===== booking =====
+(function(){let ppl=2;const P=$("#ppl");P.innerHTML=[1,2,3,4,5,6,7,8].map(n=>`<button type="button" data-p="${n}" class="${n===2?"on":""}">${n}${n===8?"+":""}</button>`).join("");
+ P.onclick=e=>{const b=e.target.closest("[data-p]");if(!b)return;ppl=+b.dataset.p;$$("#ppl button").forEach(x=>x.classList.toggle("on",x===b))};
+ const d=new Date(),iso=x=>x.getFullYear()+"-"+pad(x.getMonth()+1)+"-"+pad(x.getDate());$("#bDate").value=iso(d);$("#bDate").min=iso(d);
+ const times=[];for(const[a,b]of H){for(let m=Math.ceil((a+10)/15)*15;m<=b-60;m+=15)times.push(hm(m))}$("#bTime").innerHTML=times.map(t=>`<option ${t==="20:00"?"selected":""}>${t}</option>`).join("");
+ $("#bookForm").onsubmit=e=>{e.preventDefault();const n=$("#bName").value.trim(),dt=$("#bDate").value;if(!n||!dt){$("#bErr").style.display="block";return}$("#bErr").style.display="none";
+  const [y,mo,da]=dt.split("-");const txt=`🍣 *Richiesta prenotazione – ${SITE}*\n\n👤 ${n}\n👥 ${ppl}${ppl===8?"+":""} persone\n📅 ${da}/${mo}/${y} ore ${$("#bTime").value}\n${$("#bTel").value?"📞 "+$("#bTel").value+"\n":""}${$("#bNote").value?"📝 "+$("#bNote").value+"\n":""}\n(richiesta di prova dal sito demo)`;
+  if(WA_NUMBER)open("https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(txt),"_blank");
+  $("#dTitle").textContent="Prenotazione";setStep(2);
+  $("#dBody").innerHTML=`<div style="text-align:center"><div class="okic">✓</div><h3 class="serif" style="font-size:30px">Richiesta pronta!</h3></div><p style="color:var(--mut);font-size:13.5px;margin:12px 0 10px">Messaggio che arriverebbe al ristorante:</p><div class="msg">${txt.replace(/</g,"&lt;")}</div><div class="note">Demo: la richiesta non è stata inviata. Per prenotare davvero: <a href="tel:+39051882248" style="color:var(--gold2)">051 882248</a>.</div>`;
+  $("#dFoot").innerHTML=`<a class="btn ghost" style="width:100%" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(txt)}">Vedi il messaggio in WhatsApp (anteprima)</a>`;
+  $("#drawer").classList.add("on");$("#ov").classList.add("on");document.body.classList.add("lock");$("#fbar").classList.remove("show")}})();
+// ===== hours =====
+(function(){const now=new Date(),wd=now.getDay(),mins=now.getHours()*60+now.getMinutes();const order=[1,2,3,4,5,6,0];
+ $("#hoursList").innerHTML=order.map(i=>`<div class="hrow ${i===wd?"today":""}"><span>${DAYS[i]}</span><span>12:00–15:00 · 18:50–23:00</span></div>`).join("");
+ const open=H.some(([a,b])=>mins>=a&&mins<b);let nxt=H.find(([a])=>mins<a);const b=$("#openBadge");
+ b.textContent=open?"Aperto ora":(nxt?"Chiuso · apre alle "+hm(nxt[0]):"Chiuso · apre domani alle 12:00");b.classList.toggle("cl",!open);
+ $("#openChip").textContent=open?"🟢 Aperto ora":"⏱ "+(nxt?"Apre alle "+hm(nxt[0]):"Apre domani alle 12:00")})();
+render();upd();observe();
+</script>
+</body>
+</html>
